@@ -1,0 +1,114 @@
+CREATE DATABASE cinema_booking;
+
+USE cinema_booking;
+
+-- Bảng User
+CREATE TABLE User (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    tel VARCHAR(15),
+    password VARCHAR(40) NOT NULL
+);
+
+-- Bảng Coupon
+CREATE TABLE Coupon (
+    coupon_id INT AUTO_INCREMENT PRIMARY KEY,
+    coupon_name VARCHAR(100) NOT NULL,
+    coupon_point INT,
+    user_id INT,
+    expiry_date DATE,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- Bảng Membership_cards
+CREATE TABLE Membership_cards (
+    membership_id INT AUTO_INCREMENT PRIMARY KEY,
+    issue_date DATE,
+    expiry_date DATE,
+    points_accumulated INT,
+    is_activated BOOLEAN
+);
+
+-- Bảng Ticket
+CREATE TABLE Ticket (
+    ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT,
+    seat_id INT,
+    cinema_id INT,
+    price DECIMAL(10, 2),
+    status ENUM('unused', 'used'),
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id),
+    FOREIGN KEY (seat_id) REFERENCES Seat(seat_id),
+    FOREIGN KEY (cinema_id) REFERENCES Cinemas(cinema_id)
+);
+
+-- Bảng Booking
+CREATE TABLE Booking (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    schedule_id INT,
+    total_price DECIMAL(10, 2),
+    booking_date DATETIME,
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (schedule_id) REFERENCES Schedule(schedule_id)
+);
+
+-- Bảng Cinemas
+CREATE TABLE Cinemas (
+    cinema_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    location VARCHAR(255),
+    phone VARCHAR(15),
+    city VARCHAR(100),
+    state VARCHAR(100)
+);
+
+-- Bảng Schedule
+CREATE TABLE Schedule (
+    schedule_id INT AUTO_INCREMENT PRIMARY KEY,
+    cinema_id INT,
+    movie_id INT,
+    room_id INT,
+    start_time DATETIME,
+    end_time DATETIME,
+    FOREIGN KEY (cinema_id) REFERENCES Cinemas(cinema_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (room_id) REFERENCES Room(room_id)
+);
+
+-- Bảng Movies
+CREATE TABLE Movies (
+    movie_id INT AUTO_INCREMENT PRIMARY KEY,
+    movie_name VARCHAR(255) NOT NULL,
+    genre_id INT,
+    title VARCHAR(255),
+    description TEXT,
+    duration INT,
+    release_date DATE,
+    FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
+);
+
+-- Bảng Genre
+CREATE TABLE Genre (
+    genre_id INT AUTO_INCREMENT PRIMARY KEY,
+    genre_name VARCHAR(100) NOT NULL
+);
+
+-- Bảng Room
+CREATE TABLE Room (
+    room_id INT AUTO_INCREMENT PRIMARY KEY,
+    cinema_id INT,
+    room_name VARCHAR(255),
+    FOREIGN KEY (cinema_id) REFERENCES Cinemas(cinema_id)
+);
+
+-- Bảng Seat
+CREATE TABLE Seat (
+    seat_id INT AUTO_INCREMENT PRIMARY KEY,
+    seat_row VARCHAR(5),
+    seat_col VARCHAR(5),
+    seat_status ENUM('available', 'booked'),
+    room_id INT,
+    FOREIGN KEY (room_id) REFERENCES Room(room_id)
+);

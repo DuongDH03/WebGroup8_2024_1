@@ -1,9 +1,19 @@
-const express = require("express");
+const express = require('express');
+const connection = require('./db');
+
 const app = express();
-require("dotenv").config;
+const port = 3000;
 
-const PORT = process.env.PORT
+// Route để kiểm tra kết nối
+app.get('/test', (req, res) => {
+    connection.query('SELECT * FROM User', (error, results) => {
+        if (error) {
+            return res.status(500).send('Database query failed: ' + error);
+        }
+        res.json(results);
+    });
+});
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
