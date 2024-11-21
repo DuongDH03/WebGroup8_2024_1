@@ -1,0 +1,50 @@
+.schedule-section{
+  background-color: rgb(228, 228, 228);
+  min-height: 100vh;
+  width: 100%;
+  /* padding: 20px; */
+}
+.schedule-section .schedule-title {
+  padding: 20px;
+  font-size: 35px;
+  text-transform: uppercase;
+}
+.schedule-section .schedule-title:before{
+  content: "";
+  border-left: 5px solid #454d6a;
+  margin-right: 12px;
+}
+.schedule-section .schedule-date-picker{
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 95%;
+}
+.schedule-section .schedule-container{
+  width: 90%;
+  margin: 20px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+.schedule-section .schedule-container .schedule-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0px;
+  padding: 10px;
+  /* border-radius: 10px; */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.schedule-section .schedule-container .schedule-item:last-child{
+  border-bottom: none;
+}
+.schedule-section .schedule-container .schedule-item h3{
+  font-size: 20px;
+}
+.schedule-section .schedule-container .schedule-item p{
+  font-size: 15px;
+}

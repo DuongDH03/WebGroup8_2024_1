@@ -1,0 +1,94 @@
+.payment-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.payment-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-header h1 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.payment-header p {
+  color: #7f8c8d;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.payment-content {
+  margin-bottom: 20px;
+}
+
+.movie-details h2,
+.screen-selection h2 {
+  font-size: 20px;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+.movie-details p {
+  font-size: 15px;
+  color: #2c3e50;
+  margin: 8px 0;
+}
+
+.screen-selection {
+  margin-top: 20px;
+}
+
+.screen-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  background-color: #f7f9fa;
+  color: #34495e;
+  transition: border-color 0.3s ease;
+}
+
+.screen-select:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.payment-footer {
+  text-align: center;
+}
+
+.pay-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pay-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.pay-button:disabled,
+.pay-button.paid {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.pay-button:disabled:hover {
+  transform: none;
+}

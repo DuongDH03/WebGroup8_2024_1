@@ -19,7 +19,7 @@ nav {
   color: var(--col1);
 }
 
-.searchbox {
+.search-box {
   display: flex;
   align-items: center;
   background-color: white;
@@ -30,7 +30,7 @@ nav {
 
 }
 
-.searchbtn {
+.search-btn {
   margin-right: 5px;
   font-size: 1.2rem;
   color: var(--col2);
@@ -48,7 +48,7 @@ input[type="text"] {
   justify-content: flex-end;
 }
 
-.theme_icon1 {
+.theme-icon1 {
   font-size: 1.5rem;
 }
 
@@ -58,6 +58,6 @@ input[type="text"] {
   margin: 0px 20px;
   cursor: pointer;
 }
-.dropicon{
+.drop-icon{
   font-size: 20px;
 }

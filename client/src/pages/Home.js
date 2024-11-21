@@ -1,11 +1,17 @@
-import React from 'react';
+import {HomeSlider} from "../components/HomeSlider/HomeSlider"
+import MovieCarousel from "../components/MovieCarousel/MovieCarousel"
+import { NowShowing } from "../components/MoviePagination/NowShowing"
 
-const Home = () => {
+export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
-  );
+      <main>
+        <div className="container">
+          <HomeSlider/>
+          <div className="md:px-24">
+            <NowShowing/>
+            <MovieCarousel/>
+          </div>
+        </div>
+      </main>
+  )
 }
-
-export default Home;
