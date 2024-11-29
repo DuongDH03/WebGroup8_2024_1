@@ -5,7 +5,7 @@ import { NowShowing } from "../components/MoviePagination/NowShowing"
 export default function Home() {
   return (
       <main>
-        <div className="container">
+        <div className="container-fluid">
           <HomeSlider/>
           <div className="md:px-24">
             <NowShowing/>

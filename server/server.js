@@ -12,6 +12,7 @@ const ticketRoutes = require('./routes/ticketRoutes');
 const genreRoutes = require('./routes/genreRoutes');
 const seatRoutes = require('./routes/seatRoutes');
 const { router: authRoutes, authenticateToken } = require('./routes/authRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -29,6 +30,7 @@ app.use('/booking', bookingRoutes);
 app.use('/ticket', ticketRoutes);
 app.use('/genre', genreRoutes);
 app.use('/seat', seatRoutes);
+app.use('/payment', paymentRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

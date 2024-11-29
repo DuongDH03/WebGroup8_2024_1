@@ -14,9 +14,11 @@ const Movie = sequelize.define('Movie', {
     wide_poster_url: { type: DataTypes.TEXT },
     trailer_url: { type: DataTypes.TEXT },
     rating: { type: DataTypes.FLOAT },
-    age_limit: { type: DataTypes.TEXT }, 
-    type: { type: DataTypes.TEXT }, 
-    formats: { type: DataTypes.ARRAY(DataTypes.TEXT) }
+    age_limit: { type: DataTypes.TEXT },
+    type: { type: DataTypes.TEXT },
+    formats: { type: DataTypes.ARRAY(DataTypes.TEXT)},
+    status: { type: DataTypes.TEXT},
+    isFeatured: { type: DataTypes.BOOLEAN },
 }, {
     tableName: 'movies',
     schema: 'public',

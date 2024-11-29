@@ -65,7 +65,7 @@ router.get('/name/:name', async (req, res) => {
     }
 });
 
-// UPDATE a Movie by ID 
+// UPDATE a Movie by ID
 router.put('/:id', async (req, res) => {
     try {
         const [updated] = await Movie.update(req.body, {
@@ -97,7 +97,7 @@ router.delete('/:id', async (req, res) => {
         } else {
             res.status(404).json({
                 error: 'Movie not found!'
-            }); 
+            });
         }
     } catch (error) {
         res.status(500).json({
@@ -168,7 +168,7 @@ router.post('/:movieId/crew/:crewId', async (req, res) => {
 router.get('/:movieId/crew', async (req, res) => {
     try {
         const { movieId } = req.params;
-    
+
         // Find the movie and include the associated crew members
         const movie = await Movie.findByPk(movieId, {
           include: {
@@ -176,11 +176,11 @@ router.get('/:movieId/crew', async (req, res) => {
             through: { attributes: [] }, // Exclude attributes from the join table
           },
         });
-    
+
         if (!movie) {
           return res.status(404).json({ error: 'Movie not found' });
         }
-    
+
         // Return the crew members
         res.json(movie.Crews);
       } catch (error) {
@@ -188,5 +188,52 @@ router.get('/:movieId/crew', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
       }
 });
+
+// GET all movies with status "showing"
+router.get('/status/showing', async (req, res) => {
+    try {
+        const movies = await Movie.findAll({
+            where: {
+                status: 'showing',
+            },
+        });
+
+        res.status(200).json(movies);
+    } catch (error) {
+        console.error('Error fetching movies with status "showing":', error);
+        res.status(500).json({ message: 'An error occurred while fetching movies.' });
+    }
+});
+
+// GET all movies with status "upcoming"
+router.get('/status/upcoming', async (req, res) => {
+    try {
+        const movies = await Movie.findAll({
+            where: {
+                status: 'upcoming'
+                }
+        });
+        res.status(200).json(movies);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET all featured movies
+router.get('/featured/true', async (req, res) => {
+    try {
+        const movies = await Movie.findAll({
+            where: {
+                isFeatured: true,
+            },
+        });
+
+        res.status(200).json(movies);
+    } catch (error) {
+        console.error('Error fetching featured movies:', error);
+        res.status(500).json({ message: 'An error occurred while fetching featured movies.' });
+    }
+});
+
 
 module.exports = router;

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { fetchMovieByName, fetchMovieById } from "../../function/movie";
+import { useParams } from "react-router-dom";
+import { fetchMovieById } from "../../function/movie";
 import MovieSchedule from "./MovieSchedule";
 import "./MovieDetails.css";
 
 const MovieDetails = () => {
+  const { id } = useParams();
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
     const getMovie = async () => {
-      const result = await fetchMovieById(7);
+      const result = await fetchMovieById(id);
       if (result.success) {
         setMovie(result.movie);
       } else {
@@ -17,14 +19,14 @@ const MovieDetails = () => {
     };
 
     getMovie();
-  }, []);
+  }, [id]);
 
   if (!movie) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="movie-page container bg-base-100">
+    <div className="movie-page container-fluid bg-base-100">
       <div
         className="top"
         style={{
@@ -36,9 +38,9 @@ const MovieDetails = () => {
             <div className="banner">
               <div className="left flex md:flex-row flex-col">
                 <div
-                  className="movie-poster md:basis-1/3"
+                  className="movie-poster md:basis-1/3 md:min-h-[700px] md:min-w-[470px]"
                 >
-                  <img src={movie.portraitposter} alt={movie.title} className="h-full"></img>
+                  <img src={movie.portraitposter} alt={movie.title} className="rounded-lg object-cover h-full w-full"></img>
                 </div>
                 <div className="movie-details min-h-full h-full md:basis-2/3">
                   <p className="title be-vietnam-pro-black text-primary">
@@ -48,7 +50,7 @@ const MovieDetails = () => {
                     <p className="formats">
                       { movie.ageLimit && <span class="badge badge-lg badge-primary mr-1">{movie.ageLimit}</span> }
                       { movie.type && <span class="badge badge-lg badge-neutral mr-1">{movie.type}</span> }
-                      { movie.formats.map((format, index) => {
+                      { movie.formats?.map((format, index) => {
                         return (
                           <span
                             className="badge badge-outline badge-lg mr-1"
@@ -64,7 +66,7 @@ const MovieDetails = () => {
                     <p className="about italic">{movie.about}</p>
                     <p className="crew">
                       Đạo diễn:{" "}
-                      {movie.crew.map((member, index) => (
+                      {movie.crew?.map((member, index) => (
                         <span key={member._id}>
                           {member.name}
                           {index < movie.crew.length - 1 ? ", " : ""}
@@ -73,7 +75,7 @@ const MovieDetails = () => {
                     </p>
                     <p className="cast">
                       Diễn viên:{" "}
-                      {movie.cast.map((actor, index) => (
+                      {movie.cast?.map((actor, index) => (
                         <span key={actor._id}>
                           {actor.name}
                           {index < movie.cast.length - 1 ? ", " : ""}
@@ -111,7 +113,7 @@ const MovieDetails = () => {
       </div>
 
       <div id="movie-schedule">
-        <MovieSchedule />
+        <MovieSchedule movieId={id} />
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo.png";
 import { signUp } from "../../function/auth";
 import "./Auth.css";
 

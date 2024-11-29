@@ -1,75 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/navigation"; // Import navigation styles
+import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  Autoplay, Pagination, Navigation } from "swiper/modules"; // Import Navigation
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { fetchUpcomingMovies, fetchGenreById } from "../../function/movie";
 
 import MovieCard from "../Movie/MovieCard";
 
 const MovieCarousel = () => {
-  const Movies = [
-      {
-        title: "MUFASA: THE LION KING: VUA SƯ TỬ",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/11/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-22.jpg",
-        _id: "",
-        genre: "Family"
-      },
-      {
-        title: "THE LORD OF THE RINGS: THE WAR OF THE ROHIRRIM",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/11/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-23.jpg",
-        _id: "",
-        genre: "Action"
-      },
-      {
-        title: "KRAVEN THE HUNTER: THỢ SĂN THỦ LĨNH",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/11/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-17.jpg",
-        _id: "",
-        genre: "Action"
-      },
-      {
-        title: "MOANA 2: HÀNH TRÌNH CỦA MOANA",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/10/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-2.png",
-        _id: "",
-        genre: "Animation"
-      },
-      {
-        title: "WOODWALKERS: NGƯỜI HÓA THÚ",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/10/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-33.jpg",
-        _id: "",
-        genre: "Fantasy"
-      },
-      {
-        title: "THÁM TỬ KIÊN: KỲ ÁN KHÔNG ĐẦU",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/09/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-5.jpg",
-        _id: "",
-        genre: "Thriller"
-      },
-      {
-        title: "SONIC THE HEDGEHOG: NHÍM SONIC 3",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/08/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-9.png",
-        _id: "",
-        genre: "Action"
-      },
-      {
-        title: "CÔNG TỬ BẠC LIÊU",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/11/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-19.jpg",
-        _id: "",
-        genre: "Drama"
-      },
-      {
-        title: "NHÀ GIA TIÊN",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/11/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp.png",
-        _id: "",
-        genre: "Mystery"
-      },
-      {
-        title: "OPERATION UNDEAD: CHIẾN ĐỊA TỬ THI",
-        imageUrl: "https://bhdstar.vn/wp-content/uploads/2024/11/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-21.jpg",
-        _id: "",
-        genre: "Horror"
+  const [upcomingMovies, setUpcomingMovies] = useState([]);
+
+  useEffect(() => {
+    const getUpcomingMovies = async () => {
+      const result = await fetchUpcomingMovies();
+      if (result.success) {
+        const moviesWithGenres = await Promise.all(result.movies.map(async (movie) => {
+          const genreResult = await fetchGenreById(movie.genre_id);
+          if (genreResult.success) {
+            return {
+              title: movie.title,
+              imageUrl: movie.potrait_poster_url,
+              _id: movie.movie_id,
+              genre: genreResult.genre.genre_name,
+            };
+          } else {
+            console.error(genreResult.error);
+            return movie;
+          }
+        }));
+        setUpcomingMovies(moviesWithGenres);
+      } else {
+        console.error(result.error);
       }
-  ];
+    };
+
+    getUpcomingMovies();
+  }, []);
 
   return (
     <div className="sliderout space-y-6  py-6">
@@ -93,28 +60,28 @@ const MovieCarousel = () => {
         }}
         navigation={true}
         breakpoints={{
-          "@0.00": {
+          320: {
             slidesPerView: 1,
             spaceBetween: 5,
           },
-          "@0.75": {
+          480: {
             slidesPerView: 2,
-            spaceBetween: 5,
+            spaceBetween: 10,
           },
-          "@1.00": {
+          768: {
             slidesPerView: 3,
-            spaceBetween: 5,
+            spaceBetween: 15,
           },
-          "@1.50": {
+          1024: {
             slidesPerView: 5,
-            spaceBetween: 5,
+            spaceBetween: 20,
           },
         }}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        {Movies.map((movie) => (
-          <SwiperSlide key={movie._id} className="mb-12">
+        {upcomingMovies.map((movie) => (
+          <SwiperSlide key={movie._id} className="flex items-center justify-center mb-12">
             <MovieCard {...movie} />
           </SwiperSlide>
         ))}

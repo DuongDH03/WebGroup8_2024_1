@@ -7,7 +7,7 @@ const Room = require('../model/Room');
 
 // CREATE a new schedule
 router.post('/', async (req, res) => {
-    const { cinema_id, movie_id, room_name, start_time, end_time } = req.body;
+    const { cinema_id, movie_id, room_id, start_time, end_time } = req.body;
     try {
         // Check if cinema exists
         const cinema = await Cinema.findByPk(cinema_id);
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
         }
 
         // Check if room exists and belongs to the cinema
-        const room = await Room.findOne({ where: { room_name, cinema_id } });
+        const room = await Room.findOne({ where: { room_id, cinema_id } });
         if (!room) {
             return res.status(404).json({ error: 'Room not found in the specified cinema' });
         }
@@ -100,6 +100,45 @@ router.delete('/:id', async (req, res) => {
             res.status(204).end();
         } else {
             res.status(404).json({ error: 'Schedule not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET all schedules by cinema_id and movie_id
+router.get('/cinema/:cinema_id/movie/:movie_id', async (req, res) => {
+    const { cinema_id, movie_id } = req.params;
+    try {
+        const schedules = await Schedule.findAll({
+            where: {
+                cinema_id,
+                movie_id
+            }
+        });
+        if (schedules.length > 0) {
+            res.status(200).json(schedules);
+        } else {
+            res.status(404).json({ error: 'No schedules found for the specified cinema and movie' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET all schedules by movie_id
+router.get('/movie/:movie_id', async (req, res) => {
+    const { movie_id } = req.params;
+    try {
+        const schedules = await Schedule.findAll({
+            where: {
+                movie_id
+            }
+        });
+        if (schedules.length > 0) {
+            res.status(200).json(schedules);
+        } else {
+            res.status(404).json({ error: 'No schedules found for the specified cinema and movie' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });

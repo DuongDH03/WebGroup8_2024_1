@@ -14,7 +14,7 @@ export const fetchAllMovies = async () => {
             return { success: false, error: result.error };
         }
     } catch (error) {
-        return { success: false, error: "Something went wrong!" };
+        return { success: false, error: error.message };
     }
 };
 
@@ -65,7 +65,7 @@ export const fetchMovieById = async (id, format = true) => {
             return { success: true, movie: movieResult, genre: genreResult, crew: crewResult };
         }
     } catch (error) {
-        return { success: false, error: "Something went wrong!" };
+        return { success: false, error: error.message };
     }
 };
 
@@ -112,13 +112,13 @@ export const fetchMovieByName = async (name, format = true) => {
         }
 
         if (format) {
-            const formattedMovie = formatMovieDetails(movieResult, genreResult, crewResult);            
+            const formattedMovie = formatMovieDetails(movieResult, genreResult, crewResult);
             return { success: true, movie: formattedMovie };
         } else {
             return { success: true, movie: movieResult, genre: genreResult, crew: crewResult };
         }
     } catch (error) {
-        return { success: false, error: "Something went wrong!" };
+        return { success: false, error: error.message };
     }
 };
 
@@ -153,4 +153,85 @@ const formatMovieDetails = (movieResult, genreResult, crewResult) => {
         })),
         about: movieResult.description
     };
+};
+
+// Fetch all movies with status "showing"
+export const fetchShowingMovies = async () => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/movie/status/showing`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const result = await response.json();
+        console.log(response);
+        if (response.ok) {
+            return { success: true, movies: result };
+        } else {
+            return { success: false, error: result.error };
+        }
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+};
+
+// Fetch all movies with status "upcoming"
+export const fetchUpcomingMovies = async () => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/movie/status/upcoming`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const result = await response.json();
+        if (response.ok) {
+            return { success: true, movies: result };
+        } else {
+            return { success: false, error: result.error };
+        }
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+};
+
+// Fetch all featured movies
+export const fetchFeaturedMovies = async () => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/movie/featured/true`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const result = await response.json();
+        if (response.ok) {
+            return { success: true, movies: result };
+        } else {
+            return { success: false, error: result.error };
+        }
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+};
+
+// Fetch genre by ID
+export const fetchGenreById = async (id) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/genre/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const result = await response.json();
+        if (response.ok) {
+            return { success: true, genre: result };
+        } else {
+            return { success: false, error: result.error };
+        }
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
 };

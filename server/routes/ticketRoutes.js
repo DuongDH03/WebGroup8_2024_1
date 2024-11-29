@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Ticket = require('../model/Ticket');
+const Booking = require('../model/Booking');
+const Schedule = require('../model/Schedule');
+const Movie = require('../model/Movie');
+const Cinema = require('../model/Cinema');
+const Room = require('../model/Room');
+const Seat = require('../model/Seat');
 
 // CREATE a new ticket
 router.post('/', async (req, res) => {
@@ -11,6 +17,16 @@ router.post('/', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+// CREATE multiple tickets
+router.post('/bulk', async (req, res) => {
+    try {
+      const tickets = await Ticket.bulkCreate(req.body);
+      res.status(201).json(tickets);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
 // READ all tickets
 router.get('/', async (req, res) => {
@@ -31,6 +47,47 @@ router.get('/:id', async (req, res) => {
         } else {
             res.status(404).json({ error: 'Ticket not found' });
         }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+// FINDS ALL tickets of an User
+router.get('/user/:user_id', async (req, res) => {
+    const { user_id } = req.params;
+    try {
+        const tickets = await Ticket.findAll({
+            include: [
+                {
+                    model: Booking,
+                    where: { user_id },
+                    include: [
+                        {
+                            model: Schedule,
+                            include: [
+                                { model: Movie, attributes: ['title'] },
+                                { model: Cinema, attributes: ['name'] },
+                                { model: Room, attributes: ['room_name'] }
+                            ]
+                        }
+                    ]
+                },
+                { model: Seat, attributes: ['seat_row', 'seat_col'] }
+            ]
+        });
+
+        const formattedTickets = tickets.map(ticket => ({
+            ticket_id: ticket.ticket_id,
+            price: ticket.price,
+            movie_name: ticket.Booking.Schedule.Movie.title,
+            schedule_start_time: ticket.Booking.Schedule.start_time,
+            room_name: ticket.Booking.Schedule.Room.room_name,
+            cinema_name: ticket.Booking.Schedule.Cinema.name,
+            seat_name: `${ticket.Seat.seat_row}${ticket.Seat.seat_col}`
+        }));
+
+        res.status(200).json(formattedTickets);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

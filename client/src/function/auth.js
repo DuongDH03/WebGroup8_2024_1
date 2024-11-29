@@ -9,7 +9,9 @@ export const signIn = async (formData) => {
         });
         const result = await response.json();
         if (response.ok) {
-            return { success: true, token: result.token };
+            localStorage.setItem("token", result.token);
+            localStorage.setItem("user", JSON.stringify(result.user));
+            return { success: true, token: result.token, user: result.user };
         } else {
             return { success: false, error: result.error };
         }
@@ -41,3 +43,8 @@ export const signUp = async (formData) => {
 export const isSignedIn = () => {
     return !!localStorage.getItem("token");
 }
+
+export const getUserInfo = () => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+};

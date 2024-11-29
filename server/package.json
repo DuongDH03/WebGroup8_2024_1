@@ -8,8 +8,9 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
+    "@stripe/react-stripe-js": "^3.0.0",
+    "@stripe/stripe-js": "^5.2.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -21,6 +22,9 @@
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
-    "server": "file:"
-  }
+    "server": "file:",
+    "stripe": "^17.4.0"
+  },
+  "keywords": [],
+  "description": ""
 }

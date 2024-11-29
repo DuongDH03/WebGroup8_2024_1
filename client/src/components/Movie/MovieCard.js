@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import "./MovieCard.css";
 
 const MovieCard = (data) => {
-  const genres = Array.isArray(data?.genres) ? data.genres.join(", ") : "No genres available";
   const navigate = useNavigate();
   const { title, imageUrl, _id, genre, ageLimit, type, format } = data;
 
@@ -23,9 +22,9 @@ const MovieCard = (data) => {
     </figure>
     <div className="card-body">
       <div className="flex flex-row justify-start gap-2">
-        { ageLimit && <div class="badge badge-lg badge-primary text-xs tracking-[-0.125em]">{ageLimit}</div> }
-        { type && <div class="badge badge-lg badge-neutral text-xs tracking-[-0.125em] w-fit">{type}</div> }
-        { format && <div class="badge badge-lg badge-outline text-xs tracking-[-0.125em]">{format}</div> }
+        { ageLimit && <div className="badge badge-lg badge-primary text-xs tracking-[-0.125em]">{ageLimit}</div> }
+        { type && <div className="badge badge-lg badge-neutral text-xs tracking-[-0.125em] w-fit">{type}</div> }
+        { format && <div className="badge badge-lg badge-outline text-xs tracking-[-0.125em]">{format}</div> }
       </div>
       <h2
         className="card-title text-lg text-primary font-bold truncate"
